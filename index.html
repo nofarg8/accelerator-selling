@@ -317,7 +317,8 @@ const DEFAULTS = /*EDITMODE-BEGIN*/{
   "spotsRemaining": 5,
   "nextWindowPrice": "529 ₪",
   "elementaryPurchaseLink": "https://www.sciencedu.online/plans-accelerator",
-  "middleSchoolPurchaseLink": "https://www.sciencedu.online/plans-accelerator"
+  "middleSchoolPurchaseLink": "https://www.sciencedu.online/plans-accelerator",
+  "institutionalPurchaseLink": "https://www.sciencedu.online/plans-accelerator"
 }/*EDITMODE-END*/;
 
 // === Reveal on scroll ===
@@ -868,6 +869,7 @@ function Pricing({tweaks}){
   useReveal();
   const elementaryReady = !!(tweaks.elementaryPurchaseLink && tweaks.elementaryPurchaseLink.trim());
   const middleReady = !!(tweaks.middleSchoolPurchaseLink && tweaks.middleSchoolPurchaseLink.trim());
+  const institutionalReady = !!(tweaks.institutionalPurchaseLink && tweaks.institutionalPurchaseLink.trim());
 
   const Buy = ({label,grade,ready,href})=>(
     <a
@@ -986,10 +988,52 @@ function Pricing({tweaks}){
           <style>{`@media(max-width:560px){.price-grid{grid-template-columns:1fr !important}.price-grid > div:last-child{border-right:none !important;padding-right:0 !important;border-top:1px solid rgba(241,235,220,0.15);padding-top:1.2rem}}`}</style>
         </div>
 
-        {/* Buy buttons */}
-        <div className="reveal" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.2rem",maxWidth:"820px",margin:"0 auto 2rem auto"}}>
+        {/* Buy buttons - personal teachers */}
+        <div className="reveal" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.2rem",maxWidth:"820px",margin:"0 auto 1.2rem auto"}}>
           <Buy label="קונה לכיתות ד-ו" grade="יסודי · ד-ו" ready={elementaryReady} href={tweaks.elementaryPurchaseLink}/>
           <Buy label="קונה לחטיבת ביניים ז-ט" grade="חטיבה · ז-ט" ready={middleReady} href={tweaks.middleSchoolPurchaseLink}/>
+        </div>
+
+        {/* Buy button - institutional */}
+        <div className="reveal" style={{maxWidth:"820px",margin:"0 auto 2rem auto"}}>
+          <a
+            href={institutionalReady?tweaks.institutionalPurchaseLink:undefined}
+            target={institutionalReady?"_blank":undefined}
+            rel={institutionalReady?"noopener":undefined}
+            onClick={institutionalReady?undefined:(e)=>e.preventDefault()}
+            className="paper-card lift"
+            style={{
+              display:"block",padding:"1.6rem 1.8rem",
+              textDecoration:"none",color:"var(--ink)",
+              borderColor:institutionalReady?"var(--ink)":"var(--rule-strong)",
+              background:institutionalReady?"var(--paper)":"var(--paper-2)",
+              boxShadow:institutionalReady?"5px 5px 0 var(--moss)":"none",
+              cursor:institutionalReady?"pointer":"not-allowed",
+              opacity:institutionalReady?1:0.85,
+            }}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"1rem",flexWrap:"wrap"}}>
+              <div>
+                <div style={{display:"flex",alignItems:"center",gap:".7rem",marginBottom:".4rem"}}>
+                  <span style={{fontSize:"1.4rem"}}>🏫</span>
+                  <span className="mono" style={{color:"var(--ink-soft)"}}>בית ספר · רישיון מוסדי</span>
+                </div>
+                <div className="serif" style={{fontSize:"1.4rem",fontWeight:700,lineHeight:1.15,marginBottom:".3rem"}}>קונה רישיון מוסדי לבית ספר</div>
+                <div style={{fontSize:".95rem",color:"var(--ink-soft)"}}>
+                  רישיון מוסדי <strong style={{color:"var(--ink)",fontWeight:600}}>{tweaks.institutionalPrice}</strong> · כולל הדרכה לצוות
+                </div>
+              </div>
+              <div style={{
+                display:"inline-flex",alignItems:"center",gap:".5rem",
+                padding:".7rem 1.2rem",borderRadius:"999px",
+                background:institutionalReady?"var(--ink)":"transparent",
+                color:institutionalReady?"var(--paper)":"var(--ink-soft)",
+                border:institutionalReady?"1px solid var(--ink)":"1px dashed var(--rule-strong)",
+                fontSize:".95rem",fontWeight:500,whiteSpace:"nowrap"
+              }}>
+                {institutionalReady ? <><span>לרכישה</span><span style={{fontFamily:"JetBrains Mono"}}>→</span></> : <span>בקרוב</span>}
+              </div>
+            </div>
+          </a>
         </div>
 
         {/* Windows table */}
@@ -1252,6 +1296,8 @@ function TweaksUI({tweaks,setTweak}){
           onChange={v=>setTweak('elementaryPurchaseLink', v)}/>
         <TweakText label="ז-ט (חטיבה)" value={tweaks.middleSchoolPurchaseLink} placeholder="https://..."
           onChange={v=>setTweak('middleSchoolPurchaseLink', v)}/>
+        <TweakText label="מוסדי" value={tweaks.institutionalPurchaseLink} placeholder="https://..."
+          onChange={v=>setTweak('institutionalPurchaseLink', v)}/>
       </TweakSection>
     </TweaksPanel>
   );
