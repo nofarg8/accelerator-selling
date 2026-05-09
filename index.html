@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>המאיץ הלשוני · ההשקה פתוחה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;800;900&family=Heebo:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --paper:#f1ebdc;
+    --paper-2:#e8e0cd;
+    --paper-3:#dcd2bb;
+    --ink:#161814;
+    --ink-soft:#3a3d35;
+    --rule:rgba(22,24,20,0.16);
+    --rule-strong:rgba(22,24,20,0.42);
+    --accent:#c2553a;
+    --accent-deep:#9a3f29;
+    --moss:#3d5a40;
+    --gold:#b58a3c;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:"Heebo",system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(194,85,58,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 30%, rgba(61,90,64,0.08), transparent 60%),
+      var(--paper);
+  }
+  .serif{font-family:"Frank Ruhl Libre",Georgia,serif;font-weight:700;letter-spacing:-0.01em}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase}
+  ::selection{background:var(--ink);color:var(--paper)}
+  .btn-primary{display:inline-flex;align-items:center;gap:.6rem;background:var(--ink);color:var(--paper);padding:1rem 1.6rem;border-radius:999px;border:1px solid var(--ink);font-family:"Heebo";font-weight:500;font-size:1.05rem;cursor:pointer;transition:transform .15s ease, background .2s, color .2s;text-decoration:none}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
+  .btn-primary[disabled],.btn-primary.disabled{background:var(--paper-3);color:var(--ink-soft);border-color:var(--rule-strong);cursor:not-allowed;pointer-events:none}
+  .btn-primary .arr{font-family:"JetBrains Mono";font-weight:500;font-size:.9rem}
+  .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--ink);padding:.85rem 1.3rem;border-radius:999px;border:1px solid var(--rule-strong);font-family:"Heebo";font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s}
+  .btn-ghost:hover{background:rgba(22,24,20,.06)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:"JetBrains Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .eyebrow .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block}
+  .sec{padding:7rem 0;position:relative}
+  .container{max-width:1240px;margin:0 auto;padding:0 2rem}
+  @media (max-width:760px){
+    .sec{padding:4rem 0}
+    .container{padding:0 1.25rem}
+    .hdr-meta{display:none !important}
+  }
+  .stickyhdr{position:sticky;top:0;z-index:40;background:rgba(241,235,220,0.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+  .pulse{animation:pulseA 2.4s ease-in-out infinite}
+  @keyframes pulseA{0%,100%{opacity:1}50%{opacity:.5}}
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .8s ease, transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+  .field{width:100%;background:var(--paper);border:1px solid var(--rule-strong);padding:.95rem 1rem;border-radius:6px;font-family:"Heebo";font-size:1rem;color:var(--ink);outline:none;transition:border .15s, background .15s}
+  .field:focus{border-color:var(--ink);background:#fff8e8}
+  @keyframes scrolly { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-track{display:flex;width:max-content;animation:scrolly 35s linear infinite}
+  @keyframes scrolly2 { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  #pricing{scroll-margin-top:90px}
+  html{scroll-behavior:smooth}
+  @keyframes float1{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+  @keyframes float2{0%,100%{transform:translateY(0) rotate(1.5deg)}50%{transform:translateY(-6px) rotate(-0.5deg)}}
+  @keyframes float3{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(0deg)}}
+  @keyframes float4{0%,100%{transform:translateY(0) rotate(0.5deg)}50%{transform:translateY(-7px) rotate(-1.5deg)}}
+  .bubble{animation-duration:6s;animation-iteration-count:infinite;animation-timing-function:ease-in-out}
+  @keyframes drawLine{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
+  @keyframes nodeIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+  .ecoLine{stroke-dasharray:200;animation:drawLine 1.4s ease-out forwards}
+  .ecoNode{transform-origin:center;transform-box:fill-box;animation:nodeIn .5s cubic-bezier(.34,1.56,.64,1) backwards}
+  /* hover lift */
+  .lift{transition:transform .25s ease, box-shadow .25s ease}
+  .lift:hover{transform:translateY(-3px)}
+  /* underline accent */
+  .uline{position:relative;display:inline-block}
+  .uline::after{content:"";position:absolute;left:-0.05em;right:-0.05em;bottom:0.08em;height:0.32em;background:var(--accent);z-index:-1;transform:skewX(-6deg);opacity:.85}
+  /* paper texture */
+  .paper-card{background:var(--paper);border:1px solid var(--rule);border-radius:6px;position:relative}
+  .paper-card::before{content:"";position:absolute;inset:0;border-radius:6px;background-image:radial-gradient(rgba(22,24,20,.04) 1px, transparent 1px);background-size:14px 14px;pointer-events:none;mix-blend-mode:multiply}
+
+  /* Sticky mobile CTA */
+  .sticky-mobile-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    padding:.75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
+    background:rgba(241,235,220,0.92);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--rule-strong);
+    display:none;
+    transform:translateY(100%);transition:transform .25s ease, opacity .25s ease;
+    opacity:0;
+  }
+  .sticky-mobile-cta.in{transform:translateY(0);opacity:1}
+  .sticky-mobile-cta a{
+    display:flex;align-items:center;justify-content:center;gap:.55rem;
+    width:100%;background:var(--ink);color:var(--paper);
+    padding:1rem 1.2rem;border-radius:999px;text-decoration:none;
+    font-family:"Heebo";font-weight:500;font-size:1rem;
+    box-shadow:0 4px 14px rgba(22,24,20,0.18);
+  }
+  @media (max-width:880px){
+    .sticky-mobile-cta{display:block}
+    body{padding-bottom:80px}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-field{appearance:none;width:100%;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+  .twk-num{display:flex;align-items:center;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*'); } catch(e){}
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    window.addEventListener('resize', clampToViewport);
+    return () => window.removeEventListener('resize', clampToViewport);
+  }, [open, clampToViewport]);
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+    setOpen(true);
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+  const dismiss = () => {
+    setOpen(false);
+    try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch(e){}
+  };
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel"
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label, children }) {
+  return (<><div className="twk-sect">{label}</div>{children}</>);
+}
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl">{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+Object.assign(window, { useTweaks, TweaksPanel, TweakSection, TweakRow, TweakText, TweakNumber, TweakToggle });
+</script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+const DEFAULTS = /*EDITMODE-BEGIN*/{
+  "windowNumber": 1,
+  "personalPrice": "431 ₪",
+  "institutionalPrice": "2,100 ₪",
+  "spotsRemaining": 5,
+  "nextWindowPrice": "529 ₪",
+  "elementaryPurchaseLink": "https://www.sciencedu.online/plans-accelerator",
+  "middleSchoolPurchaseLink": "https://www.sciencedu.online/plans-accelerator"
+}/*EDITMODE-END*/;
+
+// === Reveal on scroll ===
+function useReveal(){
+  useEffect(()=>{
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:0.12});
+    els.forEach(el=>io.observe(el));
+    return ()=>io.disconnect();
+  },[]);
+}
+
+function smoothScrollToPricing(e){
+  if(e) e.preventDefault();
+  const target = document.getElementById('roi') || document.getElementById('pricing');
+  if(target){
+    const y = target.getBoundingClientRect().top + window.scrollY - 24;
+    window.scrollTo({top:y, behavior:'smooth'});
+  }
+}
+
+// === Logo mark ===
+const LogoMark = ({size=40}) => (
+  <img src="https://nofars.neocities.org/logo-maatz.png" alt="המאיץ הלשוני" width={size} height={size} style={{display:"block",objectFit:"contain"}}/>
+);
+
+// === Header ===
+function Header(){
+  return (
+    <header className="stickyhdr">
+      <div className="container" style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0.85rem 2rem",gap:"1rem"}}>
+        <div style={{display:"flex",alignItems:"center",gap:".7rem"}}>
+          <LogoMark size={44}/>
+          <div style={{lineHeight:1.1}}>
+            <div className="serif" style={{fontSize:"1.1rem",fontWeight:700}}>המאיץ הלשוני</div>
+            <div className="mono" style={{color:"var(--ink-soft)"}}>נופר גרגרוד · פיתוח חשיבה</div>
+          </div>
+        </div>
+        <div className="hdr-meta" style={{display:"flex",alignItems:"center",gap:"1rem"}}>
+          <div className="mono" style={{color:"var(--ink-soft)",display:"flex",alignItems:"center",gap:".5rem"}}>
+            <span style={{width:6,height:6,background:"var(--accent)",borderRadius:"50%"}} className="pulse"></span>
+            <span>גיליון 02 · ההשקה פתוחה</span>
+          </div>
+          <a href="#pricing" onClick={smoothScrollToPricing} className="btn-primary" style={{padding:"0.6rem 1.05rem",fontSize:".9rem"}}>אני רוצה את המאיץ <span className="arr">←</span></a>
+        </div>
+      </div>
+      <style>{`@media(max-width:780px){.hdr-meta .mono{display:none}}`}</style>
+    </header>
+  );
+}
+
+// === Hero diagram ===
+const HeroDiagram = () => {
+  const labels = [
+    {x:180,y:62,n:"01",t:"טקסט אורייני"},
+    {x:300,y:130,n:"02",t:"מעבדת שורשים"},
+    {x:300,y:250,n:"03",t:"גלגלי הרגשות"},
+    {x:60,y:250,n:"04",t:"מילון אישי"},
+    {x:60,y:130,n:"05",t:"שעשועון מילים"},
+  ];
+  return (
+    <svg viewBox="0 0 360 360" style={{width:"100%",height:"auto",display:"block"}}>
+      <defs>
+        <pattern id="dotsHero" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.7" fill="rgba(22,24,20,0.2)"/>
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="360" height="360" fill="url(#dotsHero)"/>
+      <g stroke="var(--ink)" strokeWidth="1" fill="none" opacity="0.7">
+        {labels.map((s,i)=>(
+          <line key={i} className="ecoLine" style={{animationDelay:(0.4+i*0.15)+"s"}} x1="180" y1="180" x2={s.x} y2={s.y}/>
+        ))}
+      </g>
+      {labels.map((s,i)=>(
+        <g key={i} className="ecoNode" style={{animationDelay:(1.0+i*0.12)+"s"}}>
+          <circle cx={s.x} cy={s.y} r="22" fill="var(--paper)" stroke="var(--ink)" strokeWidth="1.2"/>
+          <text x={s.x} y={s.y+3} textAnchor="middle" fontFamily="JetBrains Mono" fontSize="10" fill="var(--ink-soft)">{s.n}</text>
+          <text x={s.x} y={s.y+39} textAnchor="middle" fontFamily="Heebo" fontSize="11" fill="var(--ink)" fontWeight="500">{s.t}</text>
+        </g>
+      ))}
+      <g className="ecoNode" style={{animationDelay:"0.1s"}}>
+        <circle cx="180" cy="180" r="36" fill="var(--ink)"/>
+        <circle cx="180" cy="180" r="36" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="3 3" className="pulse"/>
+        <text x="180" y="178" textAnchor="middle" fontFamily="Frank Ruhl Libre" fontSize="15" fontWeight="700" fill="var(--paper)">המוח</text>
+        <text x="180" y="193" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="8" fill="var(--accent)">CORE</text>
+      </g>
+      {[[10,10],[350,10],[10,350],[350,350]].map((p,i)=>(
+        <g key={i} stroke="var(--ink)" strokeWidth="1">
+          <line x1={p[0]-5} y1={p[1]} x2={p[0]+5} y2={p[1]}/>
+          <line x1={p[0]} y1={p[1]-5} x2={p[0]} y2={p[1]+5}/>
+        </g>
+      ))}
+    </svg>
+  );
+};
+
+// === Hero ===
+function Hero({tweaks}){
+  return (
+    <section className="sec" style={{paddingTop:"4.5rem",paddingBottom:"3.5rem",position:"relative"}}>
+      <div className="container">
+        <div className="hero-grid" style={{display:"grid",gridTemplateColumns:"1.35fr 1fr",gap:"3rem",alignItems:"center"}}>
+          <div>
+            <div className="eyebrow" style={{marginBottom:"1.4rem"}}>
+              <span className="dot"></span>
+              <span>גיליון 02 · ההשקה פתוחה</span>
+              <span style={{flex:1,height:1,background:"var(--rule)",minWidth:"40px",margin:"0 .25rem"}}></span>
+              <span>שלב ב'</span>
+            </div>
+
+            <h1 className="serif" style={{fontSize:"clamp(2.4rem,5.4vw,5rem)",lineHeight:1.02,margin:"0 0 1.6rem 0",letterSpacing:"-0.025em"}}>
+              די לנסות לסגור פערים בשפה<br/>
+              בעזרת <span className="uline">פלסטרים</span>.
+            </h1>
+
+            <p style={{fontSize:"1.18rem",lineHeight:1.65,color:"var(--ink-soft)",maxWidth:"600px",margin:"0 0 2rem 0",fontWeight:300}}>
+              המוח של התלמידים שלך לא צריך עוד דפי עבודה - הוא צריך <em style={{fontStyle:"normal",fontWeight:500,color:"var(--ink)",borderBottom:"2px solid var(--accent)"}}>ארכיטקטורה</em>.
+              בואי לראות איך מערכת אקולוגית אחת מאיצה קריאה, הבנה, כתיבה ודקדוק - ועובדת על כל הפרופילים בכיתה ההטרוגנית שלך.
+            </p>
+
+            <div style={{display:"flex",gap:"0.9rem",flexWrap:"wrap",alignItems:"center",marginBottom:"2.5rem"}}>
+              <a href="#pricing" onClick={smoothScrollToPricing} className="btn-primary">
+                <span>אני רוצה את המאיץ</span>
+                <span className="arr">→</span>
+              </a>
+              <div style={{display:"flex",alignItems:"center",gap:".5rem",fontSize:".95rem",color:"var(--ink-soft)"}}>
+                <span className="mono" style={{color:"var(--accent)"}}>{tweaks.personalPrice}</span><span>·</span><span>גישה מיידית</span><span>·</span><span>רישיון לכל החיים</span>
+              </div>
+            </div>
+
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"1.5rem",borderTop:"1px solid var(--rule)",paddingTop:"1.5rem"}}>
+              {[
+                {k:"05",v:"רכיבים בערכה"},
+                {k:"04",v:"פרופילים של לומדים"},
+                {k:"01",v:"מערכת הוליסטית להאצת שפה"},
+              ].map((s,i)=>(
+                <div key={i}>
+                  <div className="serif" style={{fontSize:"2.4rem",lineHeight:1,fontWeight:800}}>{s.k}</div>
+                  <div style={{fontSize:".88rem",color:"var(--ink-soft)",marginTop:".3rem"}}>{s.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{position:"relative"}}>
+            <div className="paper-card" style={{padding:"1.2rem"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.7rem"}}>
+                <span className="mono" style={{color:"var(--ink-soft)"}}>FIG.01 - ארכיטקטורת המאיץ</span>
+                <span className="mono" style={{color:"var(--ink-soft)"}}>SCALE 1:1</span>
+              </div>
+              <HeroDiagram/>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"0.7rem"}}>
+                <span className="mono" style={{color:"var(--ink-soft)"}}>05 רכיבים → 01 רשת</span>
+                <span className="mono" style={{color:"var(--accent)"}}>● ACTIVE</span>
+              </div>
+            </div>
+            <div style={{position:"absolute",top:"-14px",right:"-14px",background:"var(--accent)",color:"var(--paper)",padding:".4rem .9rem",fontFamily:"JetBrains Mono",fontSize:"11px",letterSpacing:".06em",transform:"rotate(2deg)",borderRadius:"2px",boxShadow:"3px 3px 0 var(--ink)"}}>
+              לא אוסף תרגילים
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`@media (max-width:880px){.hero-grid{grid-template-columns:1fr !important;gap:2.5rem !important}}`}</style>
+    </section>
+  );
+}
+
+// === Ticker ===
+function Ticker(){
+  const items = ["נוירו-פדגוגיה","חזרה מרווחת","מודעות מורפולוגית","קידוד עמוק","למידה רב-חושית","התאמה אישית","למידה פעילה","חינוך לשוני","אוצר מילים","הבנת הנקרא","מבוססת מחקר"];
+  const renderRow = ()=>items.map((x,i)=>(
+    <span key={i} style={{display:"inline-flex",alignItems:"center",gap:".8rem",padding:"0 1.1rem"}}>
+      <span className="serif" style={{fontSize:"1.6rem",fontWeight:700}}>{x}</span>
+      <span style={{color:"var(--accent)",fontSize:"1.1rem"}}>✦</span>
+    </span>
+  ));
+  return (
+    <div style={{background:"var(--ink)",color:"var(--paper)",padding:"1rem 0",borderTop:"1px solid var(--ink)",borderBottom:"1px solid var(--ink)",overflow:"hidden"}}>
+      <div className="ticker-track" style={{display:"flex",alignItems:"center",whiteSpace:"nowrap"}}>
+        {renderRow()}{renderRow()}
+      </div>
+    </div>
+  );
+}
+
+// === Problem section: thought bubbles ===
+function ProblemSection(){
+  useReveal();
+  const bubbles = [
+    {color:"#e8d5e8",label:"לקויות למידה",quote:"אני זוכרת שלמדנו את זה, אבל לא מצליחה...",pos:{top:"0%",right:"4%"},anim:"float1",rotate:"-3deg"},
+    {color:"#f3d4be",label:"עולים ודו-לשוניים",quote:"מה זה 'הסתגלות'? לא מכיר את המילה.",pos:{top:"18%",left:"2%"},anim:"float2",rotate:"3deg"},
+    {color:"#f5e3a8",label:"ADHD",quote:"זה משעמם אותי...",pos:{top:"55%",right:"6%"},anim:"float3",rotate:"-4deg"},
+    {color:"#d4e3c8",label:"פערי שפה",quote:"לא מבין את השאלה.",pos:{top:"70%",left:"4%"},anim:"float4",rotate:"2deg"},
+  ];
+  return (
+    <section className="sec" style={{background:"linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)",borderTop:"1px solid var(--rule)",borderBottom:"1px solid var(--rule)"}}>
+      <div className="container">
+        <div className="reveal" style={{maxWidth:"760px",margin:"0 auto 4rem auto",textAlign:"center"}}>
+          <div className="eyebrow" style={{justifyContent:"center",marginBottom:"1.2rem"}}>
+            <span className="dot"></span>
+            <span>02 · הבעיה</span>
+          </div>
+          <h2 className="serif" style={{fontSize:"clamp(2rem,4.2vw,3.4rem)",lineHeight:1.05,margin:"0 0 1.4rem 0",letterSpacing:"-0.02em"}}>
+            את מלמדת, הם מתרגלים -<br/>
+            והפער <span className="uline">נשאר</span>. למה?
+          </h2>
+          <p style={{fontSize:"1.1rem",lineHeight:1.7,color:"var(--ink-soft)",maxWidth:"640px",margin:"0 auto"}}>
+            את מכירה את ההרגשה. את מסבירה, נותנת דפי עבודה, חוזרת - ובשיעור הבא הכל מתאדה. תלמידים עם לקויות למידה, ADHD, עולים, או ישראלים עם פערי שפה — לא מצליחים להחזיק את השפה כשלם.
+          </p>
+        </div>
+
+        <div className="bubbles-stage" style={{position:"relative",height:"600px",maxWidth:"1100px",margin:"0 auto"}}>
+          {/* central insight */}
+          <div className="reveal" style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",textAlign:"center",zIndex:2,maxWidth:"380px"}}>
+            <div style={{padding:"2rem",background:"var(--ink)",color:"var(--paper)",borderRadius:"4px",position:"relative"}}>
+              <div className="mono" style={{color:"var(--accent)",marginBottom:".7rem"}}>האמת הנוירו-פדגוגית</div>
+              <div className="serif" style={{fontSize:"1.6rem",lineHeight:1.2,fontWeight:700}}>
+                המוח לא מאחסן<br/>
+                <span style={{color:"var(--accent)"}}>מילים בודדות</span>.<br/>
+                הוא מאחסן <span style={{borderBottom:"2px solid var(--accent)"}}>רשתות</span>.
+              </div>
+              <div className="mono" style={{marginTop:"1rem",color:"rgba(241,235,220,0.55)"}}>אם אין רשת - אין למידה</div>
+            </div>
+          </div>
+
+          {bubbles.map((b,i)=>(
+            <div key={i} className="reveal bubble" style={{position:"absolute",...b.pos,maxWidth:"280px",animationName:b.anim,transform:`rotate(${b.rotate})`,zIndex:1}}>
+              <div style={{position:"relative"}}>
+                {/* tail */}
+                <div style={{position:"absolute",bottom:"-10px",[i%2===0?"right":"left"]:"30px",width:"22px",height:"22px",background:b.color,clipPath:"polygon(0 0, 100% 0, 50% 100%)"}}></div>
+                <div style={{padding:"1.1rem 1.3rem",background:b.color,borderRadius:"22px",boxShadow:"4px 4px 0 rgba(22,24,20,0.12)",border:"1px solid rgba(22,24,20,0.15)"}}>
+                  <div className="mono" style={{color:"var(--ink-soft)",marginBottom:".4rem",opacity:.8}}>{b.label}</div>
+                  <div className="serif" style={{fontSize:"1.15rem",lineHeight:1.35,fontWeight:500}}>"{b.quote}"</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="reveal" style={{maxWidth:"760px",margin:"3rem auto 0 auto",textAlign:"center",fontSize:"1.05rem",lineHeight:1.7,color:"var(--ink-soft)"}}>
+          המכנה המשותף? המוח שלהם עוד לא בנה את הרשת שמחזיקה שפה כשלם - לא במילים, לא במשפטים, לא בהבנה ולא בכתיבה. <strong style={{color:"var(--ink)",fontWeight:500}}>כל רובד עומד לבד.</strong>
+        </div>
+      </div>
+      <style>{`
+        .bubble{animation-iteration-count:infinite;animation-duration:6s;animation-timing-function:ease-in-out}
+        @media (max-width:900px){
+          .bubbles-stage{height:auto !important;display:flex !important;flex-direction:column;gap:1.2rem;align-items:center}
+          .bubbles-stage > .reveal{position:relative !important;top:auto !important;left:auto !important;right:auto !important;transform:none !important;max-width:100% !important;animation:none !important}
+        }
+      `}</style>
+    </section>
+  );
+}
+
+// === Solution: 5 components ===
+const componentsList = [
+  {n:"01",icon:"📘",title:"הטקסט האורייני",sub:"סולם 5 רמות",body:"טקסטים מקוריים מדורגים, מהאישי ועד האקדמי. לכל טקסט 10 שאלות מותאמות אישית שבונו לפי הטקסט הספציפי, ומתחברות ישירות לרכיבים הדיגיטליים.",chip:"מהאישי לאקדמי"},
+  {n:"02",icon:"🌳",title:"מעבדת השורשים",sub:"מודעות מורפולוגית",body:"אחד המנבאים החזקים לדיוק כתיב והבנת הנקרא. מדריך מורה מפורט לכל טקסט - אילו שורשים, באיזו תדירות, עם איזה מיקוד פדגוגי.",chip:"מדריך מורה מובנה"},
+  {n:"03",icon:"🎡",title:"גלגלי הרגשות ומילות הקישור",sub:"אילוץ קוגניטיבי",body:"תשתית תחבירית-רגשית שהופכת מילים בודדות לכתיבה עשירה. התלמיד/ה מקבל/ת אקראית מילת קישור ומילת רגש - ובונה משפט הגיוני בהקשר לטקסט.",chip:"יוצא מאזור הנוחות"},
+  {n:"04",icon:"📓",title:"המילון האישי",sub:"קידוד זיכרון עמוק",body:"הרכיב היחיד שהתלמיד/ה בונה/ה בעצמו/ה. כתיבה ידנית מונחית שמחברת מילים חדשות לחיים האישיים שלה/ו - קולב קוגניטיבי שמחזיק את המילים זמינות.",chip:"זיכרון לטווח ארוך"},
+  {n:"05",icon:"🎮",title:"שעשועון המילים הגדול",sub:"כלי דיגיטלי",body:"9 משחקי משנה דיגיטליים שהופכים תרגול לחוויה. טיפול שורש בשגיאות כתיב, אוצר מילים אישי, תחרויות משעשעות ומזלת מיצים. מצב הקנייה מקדימה מאפשר לתלמיד להגיע מוכן לשיעור הבא.",chip:"9 משחקים · מצב הקנייה"},
+];
+
+function SolutionSection(){
+  useReveal();
+  const [active,setActive] = useState(null);
+  return (
+    <section className="sec" style={{position:"relative"}}>
+      <div className="container">
+        <div className="reveal" style={{maxWidth:"800px",margin:"0 auto 4rem auto"}}>
+          <div className="eyebrow" style={{marginBottom:"1.2rem"}}><span className="dot"></span><span>03 · הפתרון</span></div>
+          <h2 className="serif" style={{fontSize:"clamp(2rem,4.4vw,3.6rem)",lineHeight:1.05,margin:"0 0 1.4rem 0",letterSpacing:"-0.02em"}}>
+            לא אוסף תרגילים.<br/>
+            <span style={{color:"var(--accent)"}}>מערכת הפעלה</span> לשונית.
+          </h2>
+          <p style={{fontSize:"1.1rem",lineHeight:1.7,color:"var(--ink-soft)",maxWidth:"640px"}}>
+            במקום "לתקן" טעויות, אנחנו בונים תשתית. המאיץ הלשוני הוא מערכת אקולוגית של 5 רכיבים שעובדים בסינכרון מלא ומאיצים את כל רובדי השפה במקביל.
+          </p>
+        </div>
+
+        <div className="comp-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1.3rem"}}>
+          {componentsList.map((c,i)=>(
+            <div key={i} className="reveal lift paper-card" style={{padding:"1.6rem 1.5rem",position:"relative",cursor:"default",transitionDelay:(i*0.05)+"s",borderColor: active===i ? "var(--ink)" : "var(--rule)"}}
+              onMouseEnter={()=>setActive(i)} onMouseLeave={()=>setActive(null)}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"1.2rem"}}>
+                <span className="mono" style={{color:"var(--ink-soft)"}}>RANGE {c.n}</span>
+                <span style={{fontSize:"1.6rem"}}>{c.icon}</span>
+              </div>
+              <h3 className="serif" style={{fontSize:"1.55rem",lineHeight:1.15,margin:"0 0 .25rem 0",fontWeight:700}}>{c.title}</h3>
+              <div className="mono" style={{color:"var(--accent)",marginBottom:".9rem"}}>{c.sub}</div>
+              <p style={{fontSize:".95rem",lineHeight:1.65,color:"var(--ink-soft)",margin:"0 0 1.2rem 0"}}>{c.body}</p>
+              <div style={{display:"inline-flex",alignItems:"center",gap:".4rem",padding:".3rem .7rem",border:"1px solid var(--rule-strong)",borderRadius:"999px",fontSize:".8rem",color:"var(--ink)"}}>
+                <span style={{width:5,height:5,background:"var(--moss)",borderRadius:"50%"}}></span>{c.chip}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="reveal" style={{marginTop:"3rem",padding:"2rem",background:"var(--ink)",color:"var(--paper)",borderRadius:"6px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",top:"-30px",right:"-30px",width:"200px",height:"200px",border:"1px dashed rgba(241,235,220,0.2)",borderRadius:"50%"}}></div>
+          <div style={{position:"absolute",top:"20px",right:"30px"}} className="mono">כלל ברזל</div>
+          <div className="serif" style={{fontSize:"clamp(1.4rem,2.6vw,2.1rem)",lineHeight:1.3,maxWidth:"720px",fontWeight:500}}>
+            כל טקסט בקיט מתחבר ל<span style={{color:"var(--accent)"}}>כל 5 הרכיבים</span>.<br/>
+            המוח מקבל את התוכן דרך 5 ערוצים - ושומר אותו.
+          </div>
+        </div>
+
+        {/* Teacher-ready callout */}
+        <div className="reveal" style={{marginTop:"2.5rem",border:"1px solid var(--rule-strong)",background:"var(--paper)",borderRadius:"6px",overflow:"hidden",boxShadow:"6px 6px 0 var(--ink)"}}>
+          <div style={{padding:"1.6rem 1.8rem",borderBottom:"1px solid var(--rule)",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:".8rem",background:"var(--paper-2)"}}>
+            <div className="eyebrow" style={{margin:0}}><span className="dot"></span><span>FOR THE TEACHER · מה את לא צריכה להכין</span></div>
+            <span className="mono" style={{color:"var(--accent)"}}>● PLUG &amp; TEACH</span>
+          </div>
+          <div style={{padding:"2rem 1.8rem"}}>
+            <h3 className="serif" style={{fontSize:"clamp(1.6rem,3vw,2.3rem)",lineHeight:1.15,margin:"0 0 .8rem 0",letterSpacing:"-0.01em",fontWeight:700}}>
+              את <span style={{color:"var(--accent)"}}>קונה את הערכה - וזהו</span>.<br/>
+              <span style={{color:"var(--ink-soft)",fontSize:"clamp(1.1rem,2vw,1.4rem)",fontWeight:400}}>בלי שעות של הכנה. בלי לבנות מחוונים. בלי לחפש שורשים.</span>
+            </h3>
+            <p style={{fontSize:"1.02rem",lineHeight:1.7,color:"var(--ink-soft)",margin:"0 0 1.6rem 0",maxWidth:"720px"}}>
+              המאיץ הלשוני הוא לא רק כלי לתלמיד - הוא <strong style={{color:"var(--ink)",fontWeight:500}}>תיק עבודה מובנה למורה</strong>. כל החלטה פדגוגית כבר נלקחה. כל חומר כבר מוכן. את פותחת ומלמדת.
+            </p>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:"1rem"}}>
+              {[
+                {n:"01",h:"מדריך מורה לכל טקסט",b:"בדיוק מה ללמד, באיזה סדר ואילו דגשים. מההתחלה ועד הסוף - את לא צריכה לדאוג מה תלמדי מחר, יש לך הכל מוכן."},
+                {n:"02",h:"רשימות מילים ושורשים",b:"רשימות מילים מדורגות והשורשים המתאימים לכל טקסט - מוכנים לשימוש, מדויקים לרמה. את לא בוררת ולא מחפשת."},
+                {n:"03",h:"הנחיות פדגוגית – איך להגיב לתלמידים",b:"לכל משימה - הסבר פדגוגי מלווה איך לקרא סוגי תשובות שונים, איך להגיב, איך לקדם את התלמיד מטעות להצלחה ומתי להתערב."},
+                {n:"04",h:"דוח אישי לכל תלמיד/ה",b:"שעשועון המילים מתעד את התרגול הביתי ומפיק לך דוח התקדמות אישי - בלי לבדוק מחברות."},
+                {n:"05",h:"מחוון מורה ומחוון תלמיד",b:"לכל משימה - מחוון מורה מפורט להערכה ומחוון תלמיד להערכה עצמית. את לא ממציאה קריטריונים – את מסמנת עליהם."},
+                {n:"06",h:"כלים להדפסה, להקרנה ולעבודה דיגיטלית",b:"הערכה כוללת כלים המוכנים להדפסה, כלים מוכנים להקרנה בכיתה, וכלים דיגיטליים מלאים. לכל מטרה - הכול מוכן."},
+              ].map((it,i)=>(
+                <div key={i} style={{padding:"1.1rem 1.2rem",border:"1px solid var(--rule)",borderRadius:"4px",background:"var(--paper-2)"}}>
+                  <div className="mono" style={{color:"var(--ink-soft)",marginBottom:".5rem"}}>{it.n}</div>
+                  <div className="serif" style={{fontSize:"1.1rem",fontWeight:600,marginBottom:".4rem",lineHeight:1.25}}>{it.h}</div>
+                  <div style={{fontSize:".9rem",lineHeight:1.55,color:"var(--ink-soft)"}}>{it.b}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{marginTop:"1.6rem",padding:"1rem 1.2rem",background:"var(--moss)",color:"var(--paper)",borderRadius:"4px",fontSize:"1rem",lineHeight:1.5,display:"flex",alignItems:"center",gap:".8rem",flexWrap:"wrap"}}>
+              <span style={{fontFamily:"JetBrains Mono",fontSize:".75rem",letterSpacing:".08em",padding:".2rem .55rem",border:"1px solid rgba(241,235,220,0.4)",borderRadius:"3px"}}>BOTTOM LINE</span>
+              <span>הזמן שלך בשטח, לא בהכנה. <strong style={{fontWeight:600}}>המורה לא צריכה לעבוד - היא צריכה ללמד.</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === Age levels ===
+function AgeLevels(){
+  useReveal();
+  const levels = [
+    {k:"א-ג",label:"יסודי",status:"בפיתוח",ready:false},
+    {k:"ד-ו",label:"יסודי",status:"זמין עכשיו",ready:true},
+    {k:"ז-ט",label:"חטיבת ביניים",status:"זמין עכשיו",ready:true},
+    {k:"י-יב",label:"תיכון",status:"בפיתוח",ready:false},
+  ];
+  return (
+    <section className="sec" style={{paddingTop:"4rem",paddingBottom:"4rem",borderTop:"1px solid var(--rule)",borderBottom:"1px solid var(--rule)",background:"var(--paper-2)"}}>
+      <div className="container">
+        <div className="reveal" style={{display:"grid",gridTemplateColumns:"1fr 1.5fr",gap:"3rem",alignItems:"center"}}>
+          <div>
+            <div className="eyebrow" style={{marginBottom:".8rem"}}><span className="dot"></span><span>04 · שכבות גיל</span></div>
+            <h2 className="serif" style={{fontSize:"clamp(1.7rem,3.2vw,2.6rem)",lineHeight:1.1,margin:"0 0 1rem 0"}}>
+              לכל שכבות הגיל
+            </h2>
+            <p style={{fontSize:"1rem",lineHeight:1.65,color:"var(--ink-soft)",margin:0}}>
+              המאיץ הלשוני זמין כיום לכיתות ד-ו ולכיתות ז-ט. השכבות הנוספות בפיתוח ויצטרפו בקרוב.
+            </p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:".9rem"}}>
+            {levels.map((l,i)=>(
+              <div key={i} className="paper-card" style={{padding:"1.2rem 1.3rem",borderColor:l.ready?"var(--ink)":"var(--rule)",background:l.ready?"var(--paper)":"transparent",position:"relative",overflow:"hidden"}}>
+                {!l.ready && <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,backgroundImage:"repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(22,24,20,0.04) 8px, rgba(22,24,20,0.04) 16px)",pointerEvents:"none"}}></div>}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div className="serif" style={{fontSize:"2rem",fontWeight:800,lineHeight:1}}>{l.k}</div>
+                  <div style={{display:"inline-flex",alignItems:"center",gap:".4rem",fontSize:".75rem",color:l.ready?"var(--moss)":"var(--ink-soft)"}}>
+                    <span style={{width:7,height:7,background:l.ready?"var(--moss)":"var(--gold)",borderRadius:"50%"}}></span>{l.status}
+                  </div>
+                </div>
+                <div style={{fontSize:".95rem",color:"var(--ink-soft)",marginTop:".4rem"}}>{l.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <style>{`@media(max-width:760px){.sec .container > .reveal{grid-template-columns:1fr !important}}`}</style>
+    </section>
+  );
+}
+
+// === About ===
+function About(){
+  useReveal();
+  return (
+    <section className="sec">
+      <div className="container">
+        <div className="about-grid" style={{display:"grid",gridTemplateColumns:"1fr 1.4fr",gap:"3rem",alignItems:"center"}}>
+          <div className="reveal" style={{position:"relative"}}>
+            {/* Photo */}
+            <div style={{position:"relative",aspectRatio:"4/5",borderRadius:"6px",overflow:"hidden",border:"1px solid var(--rule-strong)",background:"var(--paper-2)"}}>
+              <img src="https://nofars.neocities.org/nofar-cropped.png.jpg" alt="נופר גרגרוד" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"75% center",display:"block",transform:"scale(1.06)",transformOrigin:"60% center"}}/>
+              <div className="mono" style={{position:"absolute",top:"12px",right:"12px",color:"var(--paper)",background:"rgba(22,24,20,0.55)",padding:".25rem .55rem",borderRadius:"3px",backdropFilter:"blur(4px)"}}>PORTRAIT</div>
+              <div className="mono" style={{position:"absolute",bottom:"12px",left:"12px",color:"var(--paper)",background:"rgba(22,24,20,0.55)",padding:".25rem .55rem",borderRadius:"3px",backdropFilter:"blur(4px)"}}>2026</div>
+            </div>
+            <div style={{position:"absolute",bottom:"-18px",right:"-18px",background:"var(--moss)",color:"var(--paper)",padding:".5rem 1rem",fontFamily:"JetBrains Mono",fontSize:"11px",letterSpacing:".06em",borderRadius:"2px",transform:"rotate(-2deg)",boxShadow:"3px 3px 0 var(--ink)"}}>
+              פיתוח חשיבה
+            </div>
+          </div>
+          <div className="reveal">
+            <div className="eyebrow" style={{marginBottom:"1.2rem"}}><span className="dot"></span><span>05 · איך הגעתי לפתח את המאיץ</span></div>
+            <h2 className="serif" style={{fontSize:"clamp(1.8rem,3.6vw,2.8rem)",lineHeight:1.08,margin:"0 0 1.5rem 0",letterSpacing:"-0.02em"}}>
+              מורה. מדריכה.<br/>
+              <span style={{color:"var(--accent)"}}>מנחה. מפתחת.</span>
+            </h2>
+            <div style={{display:"grid",gap:"1rem",fontSize:"1.05rem",lineHeight:1.7,color:"var(--ink-soft)"}}>
+              <p style={{margin:0}}>
+                אני <strong style={{color:"var(--ink)",fontWeight:500}}>נופר גרגרוד</strong> - מורה, מדריכה במשרד החינוך, מנחת השתלמויות ופיתוח מקצועי למורים, ומפתחת טכנו-פדגוגית, עם תואר במדעי המוח מאוניברסיטת תל אביב. <strong style={{color:"var(--ink)",fontWeight:600}}>אבל יותר מהכל - אני נמצאת בשטח.</strong>
+              </p>
+              <p style={{margin:0}}>
+                אני מנהלת את <strong style={{color:"var(--ink)",fontWeight:500}}>Hebrew Sunday School</strong>, בית ספר יום ראשון לתלמידים דו-לשוניים שגרים בישראל ולומדים בשפה זרה. שם, מדי שבוע, אני רואה איך תלמידים עם פערים מורכבים מצליחים לפצח את קוד השפה - כשהם מקבלים את הפיגומים הנכונים.
+              </p>
+              <p style={{margin:0}}>
+                אני <strong style={{color:"var(--ink)",fontWeight:500}}>מלמדת תלמידים מורכבים בשפה</strong>, ומצליחה ללמד אותם דרכה <strong style={{color:"var(--ink)",fontWeight:500}}>מדעים, מתמטיקה ורבי מלל</strong> - כי העבודה בשפה דרך המאיץ הלשוני פותחת להם את הדלת לכל השאר.
+              </p>
+              <p style={{margin:0}}>
+                את המאיץ הלשוני פיתחתי מתוך <strong style={{color:"var(--ink)",fontWeight:500}}>המעבדה החיה הזו</strong> - כדי להביא לכיתה שלך כלי עבודה מובנה, מוכח, מבוסס מחקר ומדויק.
+              </p>
+            </div>
+
+            {/* Pull Quote */}
+            <div className="reveal" style={{margin:"2rem 0 1.5rem 0",padding:"1.6rem 1.8rem 1.6rem 1.4rem",borderRight:"3px solid var(--accent)",background:"linear-gradient(90deg, rgba(194,85,58,0.06), transparent)",position:"relative"}}>
+              <div style={{position:"absolute",top:"-12px",right:"24px",fontFamily:"Frank Ruhl Libre",fontSize:"3.2rem",lineHeight:1,color:"var(--accent)",fontWeight:800}}>"</div>
+              <div className="serif" style={{fontSize:"clamp(1.4rem,2.4vw,1.9rem)",lineHeight:1.25,fontWeight:700,color:"var(--accent-deep)",letterSpacing:"-0.015em"}}>
+                הפערים בכיתה הם לא גזירת גורל - <span style={{color:"var(--accent)"}}>הם תוצאה של לימוד שפה שלא הונגש כמערכת כוללת.</span>
+              </div>
+            </div>
+
+            <div style={{display:"flex",flexWrap:"wrap",gap:".5rem",marginTop:"1.7rem"}}>
+              {["מדעי המוח · ת״א","משרד החינוך · מדריכה","Hebrew Sunday School · מנהלת","מורה לתלמידים מורכבים בשפה","פיתוח טכנו-פדגוגי","פיתוח מקצועי למורים"].map((t,i)=>(
+                <span key={i} style={{padding:".4rem .8rem",border:"1px solid var(--rule-strong)",borderRadius:"999px",fontSize:".82rem",color:"var(--ink)"}}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`@media(max-width:880px){.about-grid{grid-template-columns:1fr !important;gap:2.5rem !important}}`}</style>
+    </section>
+  );
+}
+
+// === What you get (replaces TrainingAgenda) ===
+function WhatYouGet(){
+  useReveal();
+  const items = [
+    {n:"01",icon:"📚",title:"5 חוברות תלמיד מקצועיות",body:"גישה דיגיטלית + להדפסה (גרסת צבע + שחור-לבן)"},
+    {n:"02",icon:"📋",title:"5 מדריכי מורה מלאים",body:"לכל טקסט: שורשים מומלצים, מילות רגש, מיקוד פדגוגי, גלגל הצלה ל-4 אוכלוסיות"},
+    {n:"03",icon:"🌳",title:"מעבדת השורשים",body:"גישה מלאה לכלי הדיגיטלי, פתוחה להתאמה אישית"},
+    {n:"04",icon:"🎡",title:"גלגלי הרגשות ומילות הקישור",body:"16 מילות ליבה + פתוחים להוספה"},
+    {n:"05",icon:"🎮",title:"שעשעון המילים הגדול",body:"מנוי שנתי לכל המשחקים"},
+    {n:"06",icon:"📓",title:"חוברת מילון אישי לתלמיד/ה",body:"גרסת הדפסה"},
+    {n:"07",icon:"🤝",title:"קהילת \"הוראה פרו אקטיבית\"",body:"קהילת המורות של נופר - מקום לשאול, להתעדכן ולהתפתח יחד"},
+    {n:"08",icon:"🎁",title:"בונוס: ממני אליך",body:"הכלי הבלעדי לסוף שנה (פרטים בסקציה הבאה)"},
+    {n:"09",icon:"♾️",title:"גישה לכל החיים לקבצי המאיץ",body:"רישיון אישי או מוסדי לבחירתך"},
+  ];
+  return (
+    <section className="sec" style={{background:"var(--ink)",color:"var(--paper)",position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:0,right:"-100px",width:"500px",height:"500px",background:"radial-gradient(circle, rgba(194,85,58,0.15), transparent 70%)",pointerEvents:"none"}}></div>
+      <div className="container" style={{position:"relative"}}>
+        <div className="reveal" style={{maxWidth:"760px",margin:"0 0 4rem 0"}}>
+          <div className="eyebrow" style={{marginBottom:"1.2rem",color:"rgba(241,235,220,0.6)"}}>
+            <span className="dot"></span><span>06 · מה את מקבלת</span>
+          </div>
+          <h2 className="serif" style={{fontSize:"clamp(2rem,4.4vw,3.6rem)",lineHeight:1.05,margin:"0 0 1.4rem 0",letterSpacing:"-0.02em"}}>
+            מערכת עבודה שלמה.<br/>
+            <span style={{color:"var(--accent)"}}>מוכנה להפעלה.</span>
+          </h2>
+          <p style={{fontSize:"1.1rem",lineHeight:1.7,color:"rgba(241,235,220,0.75)",maxWidth:"640px"}}>
+            לא חוברת. לא PDF. תשתית פדגוגית מלאה.
+          </p>
+        </div>
+
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(290px,1fr))",gap:"1.2rem"}}>
+          {items.map((it,i)=>(
+            <div key={i} className="reveal" style={{padding:"1.6rem",background:"rgba(241,235,220,0.04)",border:"1px solid rgba(241,235,220,0.12)",borderRadius:"4px",transitionDelay:(i*0.04)+"s"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1rem"}}>
+                <span className="mono" style={{color:"rgba(241,235,220,0.5)"}}>{it.n}</span>
+                <span style={{fontSize:"1.4rem"}}>{it.icon}</span>
+              </div>
+              <h3 className="serif" style={{fontSize:"1.25rem",lineHeight:1.25,margin:"0 0 .6rem 0",fontWeight:700}}>{it.title}</h3>
+              <p style={{margin:0,fontSize:".93rem",lineHeight:1.6,color:"rgba(241,235,220,0.7)"}}>{it.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="reveal" style={{marginTop:"2.2rem",padding:"1.1rem 1.4rem",background:"var(--moss)",color:"var(--paper)",borderRadius:"4px",fontSize:"1.05rem",lineHeight:1.5,display:"flex",alignItems:"center",gap:".9rem",flexWrap:"wrap"}}>
+          <span style={{fontFamily:"JetBrains Mono",fontSize:".75rem",letterSpacing:".08em",padding:".2rem .55rem",border:"1px solid rgba(241,235,220,0.4)",borderRadius:"3px"}}>BOTTOM LINE</span>
+          <span>כל מה שאת צריכה - בערכה אחת. <strong style={{fontWeight:600}}>גישה מיידית מרגע אישור הרכישה.</strong></span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === Gift - full reveal ===
+function Gift(){
+  useReveal();
+  return (
+    <section className="sec" style={{paddingTop:"5rem",paddingBottom:"5rem"}}>
+      <div className="container">
+        <div className="reveal paper-card" style={{padding:"3rem 2.5rem",display:"grid",gridTemplateColumns:"auto 1fr",gap:"2rem",alignItems:"center",maxWidth:"960px",margin:"0 auto",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",bottom:"-40px",left:"-40px",width:"200px",height:"200px",background:"radial-gradient(circle, var(--gold) 0%, transparent 70%)",opacity:.15,pointerEvents:"none"}}></div>
+          <div style={{width:"110px",height:"110px",position:"relative",flexShrink:0}}>
+            <svg viewBox="0 0 110 110" width="110" height="110">
+              <rect x="15" y="35" width="80" height="60" rx="3" fill="var(--accent)" stroke="var(--ink)" strokeWidth="1.5"/>
+              <rect x="50" y="35" width="10" height="60" fill="var(--ink)"/>
+              <rect x="15" y="55" width="80" height="6" fill="var(--ink)"/>
+              <path d="M55 35 Q35 15 25 25 Q20 30 30 35 Z" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2"/>
+              <path d="M55 35 Q75 15 85 25 Q90 30 80 35 Z" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2"/>
+              <text x="55" y="78" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="var(--paper)">AI · GIFT</text>
+            </svg>
+          </div>
+          <div>
+            <div className="eyebrow" style={{marginBottom:".8rem"}}><span className="dot"></span><span>07 · ממני אליך</span></div>
+            <h3 className="serif" style={{fontSize:"clamp(1.5rem,2.8vw,2.1rem)",lineHeight:1.15,margin:"0 0 .9rem 0",fontWeight:700}}>
+              <span className="uline">ממני אליך</span> - בוטית AI<br/>
+              שתחסוך לך שעות בסוף השנה
+            </h3>
+            <p style={{margin:"0 0 .9rem 0",fontSize:"1.02rem",lineHeight:1.7,color:"var(--ink-soft)"}}>
+              <strong style={{color:"var(--ink)",fontWeight:600}}>"ממני אליך"</strong> - בוטית AI בלעדית שתייצר עבורך את הערכות סוף השנה לכל הכיתה ב-5 דקות. את מזינה את שמות התלמידים והערות קצרות, והבוטית מנפיקה לך הערכה מקצועית, אישית ומדויקת לכל ילד וילדה.
+            </p>
+            <div style={{display:"inline-flex",alignItems:"center",gap:".5rem",padding:".45rem .9rem",background:"var(--accent)",color:"var(--paper)",borderRadius:"999px",fontSize:".88rem",fontWeight:500}}>
+              <span style={{fontFamily:"JetBrains Mono",fontSize:".7rem",letterSpacing:".08em"}}>BONUS</span>
+              <span>מתנת השקה בלעדית · כלולה ברכישה, ללא תוספת מחיר</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`@media(max-width:680px){.paper-card[style*="grid-template-columns: auto 1fr"]{grid-template-columns:1fr !important;text-align:center}.paper-card svg{margin:0 auto}}`}</style>
+    </section>
+  );
+}
+
+// === Pricing (replaces FinalCTA) ===
+function Pricing({tweaks}){
+  useReveal();
+  const elementaryReady = !!(tweaks.elementaryPurchaseLink && tweaks.elementaryPurchaseLink.trim());
+  const middleReady = !!(tweaks.middleSchoolPurchaseLink && tweaks.middleSchoolPurchaseLink.trim());
+
+  const Buy = ({label,grade,ready,href})=>(
+    <a
+      href={ready?href:undefined}
+      target={ready?"_blank":undefined}
+      rel={ready?"noopener":undefined}
+      onClick={ready?undefined:(e)=>e.preventDefault()}
+      className={"paper-card lift"}
+      style={{
+        display:"block",padding:"1.6rem 1.6rem 1.4rem",
+        textDecoration:"none",color:"var(--ink)",
+        borderColor:ready?"var(--ink)":"var(--rule-strong)",
+        background:ready?"var(--paper)":"var(--paper-2)",
+        boxShadow:ready?"5px 5px 0 var(--ink)":"none",
+        cursor:ready?"pointer":"not-allowed",
+        opacity:ready?1:0.85,
+      }}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:".7rem"}}>
+        <span className="mono" style={{color:"var(--ink-soft)"}}>{grade}</span>
+        <span style={{fontSize:"1.4rem"}}>🎯</span>
+      </div>
+      <div className="serif" style={{fontSize:"1.5rem",fontWeight:700,lineHeight:1.15,marginBottom:".4rem"}}>{label}</div>
+      <div style={{fontSize:".95rem",color:"var(--ink-soft)",marginBottom:"1.1rem"}}>
+        מורה אישי <strong style={{color:"var(--ink)",fontWeight:600}}>{tweaks.personalPrice}</strong>
+      </div>
+      <div style={{
+        display:"inline-flex",alignItems:"center",gap:".5rem",
+        padding:".7rem 1.2rem",borderRadius:"999px",
+        background:ready?"var(--ink)":"transparent",
+        color:ready?"var(--paper)":"var(--ink-soft)",
+        border:ready?"1px solid var(--ink)":"1px dashed var(--rule-strong)",
+        fontSize:".95rem",fontWeight:500
+      }}>
+        {ready ? <><span>לרכישה</span><span style={{fontFamily:"JetBrains Mono"}}>→</span></> : <span>בקרוב</span>}
+      </div>
+    </a>
+  );
+
+  return (
+    <section id="pricing" className="sec" style={{background:"linear-gradient(180deg, var(--paper-2) 0%, var(--paper-3) 100%)",borderTop:"1px solid var(--rule)"}}>
+      <div className="container">
+        <div className="reveal" style={{textAlign:"center",maxWidth:"780px",margin:"0 auto 3rem auto"}}>
+          <div className="eyebrow" style={{justifyContent:"center",marginBottom:"1.4rem"}}>
+            <span className="dot"></span>
+            <span>08 · תנאי ההשקה</span>
+          </div>
+          <h2 className="serif" style={{fontSize:"clamp(2.2rem,5vw,4.2rem)",lineHeight:1.02,margin:"0 0 1.4rem 0",letterSpacing:"-0.025em"}}>
+            השנה הזו, הפערים<br/>
+            יכולים <span className="uline">להיסגר</span>.
+          </h2>
+          <p style={{fontSize:"1.15rem",lineHeight:1.65,color:"var(--ink-soft)",margin:"0 0 0 0"}}>
+            את לא צריכה עוד דפי עבודה. את צריכה תשתית.<br/>
+            הצטרפי למשתמשות הראשונות במחיר השקה.
+          </p>
+        </div>
+
+        {/* ROI block */}
+        <div id="roi" className="reveal" style={{maxWidth:"880px",margin:"0 auto 2.5rem auto",border:"1px solid var(--rule-strong)",background:"var(--paper)",borderRadius:"6px",padding:"1.6rem 1.8rem",boxShadow:"4px 4px 0 var(--moss)",scrollMarginTop:"24px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:".6rem",marginBottom:".8rem"}}>
+            <span style={{fontSize:"1.4rem"}}>💡</span>
+            <span className="mono" style={{color:"var(--moss)"}}>ROI · למה לקנות עכשיו?</span>
+          </div>
+          <h3 className="serif" style={{fontSize:"clamp(1.2rem,2.2vw,1.6rem)",margin:"0 0 1rem 0",fontWeight:700,lineHeight:1.25}}>
+            ההשקעה במאיץ הלשוני <span style={{color:"var(--accent)"}}>מחזירה את עצמה</span> כבר בשבוע הראשון
+          </h3>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:"1rem"}}>
+            {[
+              {h:"חיסכון של שעות תכנון",b:"הערכה מגיעה מוכנה - את לא בוררת ולא מחפשת."},
+              {h:"שקט פדגוגי",b:"התלמידים פועלים בתוך מערכת מובנית."},
+              {h:"מחיר השקה",b:"המחיר רק יעלה מכאן."},
+            ].map((it,i)=>(
+              <div key={i} style={{display:"flex",gap:".7rem",alignItems:"flex-start"}}>
+                <span style={{color:"var(--moss)",fontSize:"1.1rem",fontWeight:700,lineHeight:1.4,flexShrink:0}}>✓</span>
+                <div>
+                  <div style={{fontWeight:500,marginBottom:".15rem",fontSize:"1rem"}}>{it.h}</div>
+                  <div style={{fontSize:".88rem",color:"var(--ink-soft)",lineHeight:1.5}}>{it.b}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Live price block */}
+        <div className="reveal" style={{maxWidth:"720px",margin:"0 auto 2.5rem auto",background:"var(--ink)",color:"var(--paper)",borderRadius:"6px",padding:"2.4rem 2rem",position:"relative",overflow:"hidden",boxShadow:"6px 6px 0 var(--accent)"}}>
+          <div style={{position:"absolute",top:"-30px",left:"-30px",width:"180px",height:"180px",border:"1px dashed rgba(241,235,220,0.18)",borderRadius:"50%"}}></div>
+
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"1.6rem",flexWrap:"wrap",gap:".6rem",position:"relative"}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:".5rem",padding:".4rem .9rem",background:"var(--accent)",color:"var(--paper)",borderRadius:"999px",fontSize:".88rem",fontWeight:500}}>
+              <span>🔥</span><span>חלון השקה {tweaks.windowNumber}</span>
+            </div>
+            <span className="mono" style={{color:"rgba(241,235,220,0.55)",display:"flex",alignItems:"center",gap:".4rem"}}>
+              <span style={{width:6,height:6,background:"var(--accent)",borderRadius:"50%"}} className="pulse"></span>LIVE
+            </span>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.4rem",marginBottom:"1.6rem"}} className="price-grid">
+            <div>
+              <div className="mono" style={{color:"rgba(241,235,220,0.5)",marginBottom:".5rem"}}>רישיון מורה אישי</div>
+              <div className="serif" style={{fontSize:"clamp(2.4rem,5vw,3.6rem)",fontWeight:800,lineHeight:1,letterSpacing:"-0.02em"}}>{tweaks.personalPrice}</div>
+            </div>
+            <div style={{borderRight:"1px solid rgba(241,235,220,0.15)",paddingRight:"1.4rem"}}>
+              <div className="mono" style={{color:"rgba(241,235,220,0.5)",marginBottom:".5rem"}}>רישיון מוסדי</div>
+              <div className="serif" style={{fontSize:"clamp(1.8rem,3.6vw,2.6rem)",fontWeight:700,lineHeight:1,letterSpacing:"-0.02em"}}>{tweaks.institutionalPrice}</div>
+              <div style={{fontSize:".82rem",color:"rgba(241,235,220,0.55)",marginTop:".4rem",lineHeight:1.4}}>כולל הדרכה לצוות בית הספר</div>
+            </div>
+          </div>
+
+          <div style={{borderTop:"1px solid rgba(241,235,220,0.15)",paddingTop:"1.2rem",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:".8rem"}}>
+            <div style={{fontSize:".95rem",color:"rgba(241,235,220,0.85)"}}>
+              לחלון זה יש <strong style={{color:"var(--accent)",fontSize:"1.1rem",fontWeight:700}}>{tweaks.spotsRemaining}</strong> מקומות
+            </div>
+            <div style={{fontSize:".88rem",color:"rgba(241,235,220,0.6)"}}>
+              אחרי זה המחיר יעלה ל-<strong style={{color:"var(--paper)",fontWeight:500}}>{tweaks.nextWindowPrice}</strong>
+            </div>
+          </div>
+          <style>{`@media(max-width:560px){.price-grid{grid-template-columns:1fr !important}.price-grid > div:last-child{border-right:none !important;padding-right:0 !important;border-top:1px solid rgba(241,235,220,0.15);padding-top:1.2rem}}`}</style>
+        </div>
+
+        {/* Buy buttons */}
+        <div className="reveal" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.2rem",maxWidth:"820px",margin:"0 auto 2rem auto"}}>
+          <Buy label="קונה לכיתות ד-ו" grade="יסודי · ד-ו" ready={elementaryReady} href={tweaks.elementaryPurchaseLink}/>
+          <Buy label="קונה לחטיבת ביניים ז-ט" grade="חטיבה · ז-ט" ready={middleReady} href={tweaks.middleSchoolPurchaseLink}/>
+        </div>
+
+        {/* Windows table */}
+        <div className="reveal" style={{maxWidth:"820px",margin:"0 auto 1.5rem auto",border:"1px solid var(--rule)",borderRadius:"6px",overflow:"hidden",background:"var(--paper)"}}>
+          <div style={{padding:"1rem 1.2rem",borderBottom:"1px solid var(--rule)",background:"var(--paper-2)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:".6rem",flexWrap:"wrap"}}>
+            <div className="mono" style={{color:"var(--ink-soft)"}}>חלונות השקה · רישיון מורה אישי</div>
+            <span className="mono" style={{color:"var(--accent)"}}>● TIMELINE</span>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:0}} className="windows-grid">
+            {[
+              {n:"חלון 1",p:"431 ₪",s:"5 ראשונות",active:tweaks.windowNumber===1},
+              {n:"חלון 2",p:"529 ₪",s:"10 הבאות",active:tweaks.windowNumber===2},
+              {n:"חלון 3",p:"592 ₪",s:"12 הבאות",active:tweaks.windowNumber===3},
+              {n:"מחיר מלא",p:"811 ₪",s:"לאחר ההשקה",active:tweaks.windowNumber>=4},
+            ].map((w,i,arr)=>(
+              <div key={i} style={{padding:"1.1rem 1rem",borderLeft:i<arr.length-1?"1px solid var(--rule)":"none",background:w.active?"var(--ink)":"transparent",color:w.active?"var(--paper)":"var(--ink)",position:"relative"}}>
+                <div className="mono" style={{color:w.active?"var(--accent)":"var(--ink-soft)",marginBottom:".4rem"}}>{w.n}{w.active?" · עכשיו":""}</div>
+                <div className="serif" style={{fontSize:"1.4rem",fontWeight:700,lineHeight:1,marginBottom:".25rem"}}>{w.p}</div>
+                <div style={{fontSize:".82rem",color:w.active?"rgba(241,235,220,0.6)":"var(--ink-soft)"}}>{w.s}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"1rem 1.2rem",borderTop:"1px solid var(--rule)",background:"var(--paper-2)",fontSize:".88rem",color:"var(--ink-soft)",lineHeight:1.5}}>
+            <strong style={{color:"var(--ink)",fontWeight:500}}>רישיון מוסדי</strong> בתנאי השקה: <strong style={{color:"var(--ink)",fontWeight:500}}>2,100 ₪</strong> (כולל הדרכת צוות) · מחיר מלא: 2,893 ₪
+          </div>
+          <style>{`@media(max-width:680px){.windows-grid{grid-template-columns:repeat(2,1fr) !important}.windows-grid>div:nth-child(2){border-left:none !important}.windows-grid>div:nth-child(3),.windows-grid>div:nth-child(4){border-top:1px solid var(--rule)}}`}</style>
+        </div>
+
+        {/* bottom note */}
+        <div className="reveal" style={{maxWidth:"720px",margin:"0 auto",textAlign:"center"}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:".7rem",fontSize:".95rem",color:"var(--ink-soft)",flexWrap:"wrap",justifyContent:"center"}}>
+            <span>גישה מיידית</span><span style={{opacity:.5}}>·</span>
+            <span>רישיון לכל החיים</span><span style={{opacity:.5}}>·</span>
+            <span>רישיון אישי או מוסדי</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === FAQ ===
+function FAQ(){
+  useReveal();
+  const [open,setOpen] = useState(-1);
+  const items = [
+    {q:"נופר, זה נראה מעולה - אבל האם זה עוד אוסף של דפי עבודה?",
+     a:"ממש לא. דפי עבודה יש בשפע ברשת. המאיץ הלשוני הוא מערכת הפעלה פדגוגית. הייחודיות שלו היא בסנכרון בין 5 הרכיבים. אנחנו לא רק \"מתרגלים\", אנחנו בונים את התשתית הנוירולוגית של השפה. זה ההבדל בין לתת לתלמיד פלסטר לבין לבנות לו את המערכת החיסונית של השפה."},
+    {q:"הכיתה שלי מאוד הטרוגנית - יש לי תלמידי שילוב, עולים ו-ADHD באותו חדר. זה באמת יתאים לכולם?",
+     a:"זו בדיוק הסיבה שפיתחתי את המאיץ. ב-Hebrew Sunday School אני פוגשת בדיוק את הערבוב הזה. המערכת בנויה בשיטת ה\"פיגומים\": הטקסטים מדורגים ב-5 רמות, והכלים (גלגלי הרגשות, מעבדת השורשים) נותנים מענה פרסונלי לכל תלמיד - בלי שאת תצטרכי להכין 4 מערכי שיעור שונים."},
+    {q:"אני לא 'טכנולוגית' גדולה. אני מפחדת להסתבך עם זה מול הכיתה.",
+     a:"אני מכירה את דפיקות הלב האלה - כש-30 תלמידים מסתכלים עלייך ופתאום הלוח לא מגיב או שהאתר לא עולה. לכן בניתי את המאיץ ככה שהטכנולוגיה תהיה שקופה עבורך.\n\nאין כאן התקנות מורכבות, אין ניהול סיסמאות לתלמידים ואין \"ניהול מערכת\" שצריך ללמוד. אם את יודעת לפתוח אתר אינטרנט בדפדפן או לשלוח לינק בוואטסאפ - את יודעת להפעיל את המאיץ הלשוני. את פשוט לוחצת, מקרינה - ומלמדת."},
+    {q:"אין לי זמן לנשום, בטח לא ללמוד מערכת חדשה עכשיו.",
+     a:"זו השאלה שאני הכי אוהבת, כי התשובה היא שהמאיץ מחזיר לך זמן. הוא מגיע מוכן להפעלה. במקום לבזבז שעות בחיפוש חומרים בקבוצות וואטסאפ או בבניית מצגות - את פשוט פותחת את הערכה ומלמדת. השקט הפדגוגי שנוצר בכיתה כשהתלמידים \"מגויסים\" לפעילות הוא החיסכון הכי גדול באנרגיה שלך."},
+    {q:"אפשר לרכוש את זה דרך תקציב בית ספרי?",
+     a:"בהחלט. המאיץ הלשוני נבנה בהתאם לתוכנית הלימודים החדשה ולדרישות המזכירות הפדגוגית. רישיון מוסדי כולל גם הדרכה לצוות המורות בבית הספר. ניתן להפיק הצעת מחיר מסודרת עבור הנהלת בית הספר או הרשות המקומית. דברי איתי ונתאים את המסמכים למה שהמנהלת שלך צריכה כדי לאשר את הרכישה."},
+    {q:"מאיפה הביטחון שזה באמת עובד?",
+     a:"הביטחון שלי מגיע משני מקומות: מהמעבדה ומהשטח. מהמעבדה - הידע שלי ממדעי המוח מוטמע בתוך הכלים האלו. מהשטח - אני מנהלת ומלמדת תלמידים מורכבים בשפה, ומצליחה ללמד אותם תחומי דעת נוספים כמו מדעים, מתמטיקה ורבי מלל, בזכות העבודה עם המאיץ הלשוני. אני לא מוכרת לך תיאוריה, אני מוכרת לך כלי שדייקתי מול תלמידים אמיתיים."},
+  ];
+  return (
+    <section className="sec" style={{paddingTop:"5rem",paddingBottom:"5rem"}}>
+      <div className="container">
+        <div className="reveal" style={{maxWidth:"800px",margin:"0 auto 3rem auto",textAlign:"center"}}>
+          <div className="eyebrow" style={{justifyContent:"center",marginBottom:"1.2rem"}}>
+            <span className="dot"></span><span>09 · יש לך שאלות?</span>
+          </div>
+          <h2 className="serif" style={{fontSize:"clamp(2rem,4.4vw,3.4rem)",lineHeight:1.05,margin:"0 0 1rem 0",letterSpacing:"-0.02em"}}>
+            יש לך שאלות?<br/>
+            בואי נעשה <span className="uline">סדר</span> (תכל'ס)
+          </h2>
+        </div>
+
+        <div className="reveal" style={{maxWidth:"880px",margin:"0 auto",display:"grid",gap:".7rem"}}>
+          {items.map((it,i)=>{
+            const isOpen = open===i;
+            return (
+              <div key={i} className="paper-card" style={{
+                borderColor:isOpen?"var(--ink)":"var(--rule)",
+                boxShadow:isOpen?"4px 4px 0 var(--ink)":"none",
+                transition:"box-shadow .2s ease, border-color .2s ease",
+              }}>
+                <button
+                  type="button"
+                  onClick={()=>setOpen(isOpen?-1:i)}
+                  aria-expanded={isOpen}
+                  style={{
+                    width:"100%",textAlign:"right",background:"transparent",border:"none",
+                    padding:"1.3rem 1.5rem",display:"flex",alignItems:"center",
+                    justifyContent:"space-between",gap:"1rem",cursor:"pointer",
+                    fontFamily:"Heebo",color:"var(--ink)"
+                  }}>
+                  <div style={{display:"flex",alignItems:"flex-start",gap:".8rem",flex:1}}>
+                    <span className="mono" style={{color:"var(--accent)",flexShrink:0,marginTop:".2rem"}}>0{i+1}</span>
+                    <span className="serif" style={{fontSize:"clamp(1.05rem,1.8vw,1.25rem)",fontWeight:600,lineHeight:1.35,textAlign:"right"}}>{it.q}</span>
+                  </div>
+                  <span style={{
+                    flexShrink:0,width:"32px",height:"32px",borderRadius:"50%",
+                    border:"1px solid var(--rule-strong)",
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    background:isOpen?"var(--ink)":"transparent",
+                    color:isOpen?"var(--paper)":"var(--ink)",
+                    fontFamily:"JetBrains Mono",fontSize:"1.1rem",fontWeight:500,
+                    transform:isOpen?"rotate(45deg)":"rotate(0)",
+                    transition:"transform .25s ease, background .2s ease, color .2s ease"
+                  }}>+</span>
+                </button>
+                <div style={{
+                  display:"grid",
+                  gridTemplateRows:isOpen?"1fr":"0fr",
+                  transition:"grid-template-rows .3s ease",
+                }}>
+                  <div style={{overflow:"hidden"}}>
+                    <div style={{
+                      padding:"0 1.5rem 1.4rem 1.5rem",
+                      paddingRight:"calc(1.5rem + 24px + .8rem)",
+                      fontSize:"1rem",lineHeight:1.7,color:"var(--ink-soft)",
+                      whiteSpace:"pre-line"
+                    }}>{it.a}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === Inline CTA strip (reusable) ===
+function CTAStrip({variant="light",eyebrow,title,note,buttonLabel="אני רוצה את המאיץ"}){
+  useReveal();
+  const isDark = variant==="dark";
+  return (
+    <section className="sec" style={{paddingTop:"3.2rem",paddingBottom:"3.2rem",background:isDark?"var(--ink)":"var(--paper-2)",borderTop:isDark?"none":"1px solid var(--rule)",borderBottom:isDark?"none":"1px solid var(--rule)"}}>
+      <div className="container">
+        <div className="reveal" style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"2rem",flexWrap:"wrap"}}>
+          <div style={{flex:"1 1 360px",minWidth:0}}>
+            {eyebrow && (
+              <div className="eyebrow" style={{marginBottom:".8rem",color:isDark?"rgba(241,235,220,0.55)":"var(--ink-soft)"}}>
+                <span className="dot" style={{background:isDark?"var(--accent)":"var(--ink)"}}></span>
+                <span>{eyebrow}</span>
+              </div>
+            )}
+            <div className="serif" style={{fontSize:"clamp(1.4rem,2.6vw,2rem)",lineHeight:1.2,fontWeight:500,color:isDark?"var(--paper)":"var(--ink)",letterSpacing:"-0.01em"}}>
+              {title}
+            </div>
+            {note && (
+              <div style={{marginTop:".7rem",fontSize:".95rem",color:isDark?"rgba(241,235,220,0.6)":"var(--ink-soft)"}}>
+                {note}
+              </div>
+            )}
+          </div>
+          <a href="#pricing" onClick={smoothScrollToPricing} className="btn-primary" style={isDark?{background:"var(--accent)",color:"var(--ink)",borderColor:"var(--accent)"}:{}}>
+            <span>{buttonLabel}</span>
+            <span className="arr">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === Footer ===
+function Footer(){
+  return (
+    <footer style={{background:"var(--ink)",color:"var(--paper)",padding:"3rem 0 2rem 0"}}>
+      <div className="container" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr",gap:"2rem",alignItems:"start"}}>
+        <div>
+          <div style={{display:"flex",alignItems:"center",gap:".7rem",marginBottom:"1rem"}}>
+            <div style={{background:"var(--paper)",borderRadius:"50%",padding:"4px",display:"flex"}}>
+              <LogoMark size={40}/>
+            </div>
+            <div className="serif" style={{fontSize:"1.3rem",fontWeight:700}}>המאיץ הלשוני</div>
+          </div>
+          <div className="serif" style={{fontSize:"1.4rem",fontWeight:500,lineHeight:1.3,maxWidth:"380px",fontStyle:"italic"}}>
+            "לא אוסף תרגילים - תשתית להצלחה."
+          </div>
+        </div>
+        <div>
+          <div className="mono" style={{color:"rgba(241,235,220,0.5)",marginBottom:".8rem"}}>יצירת קשר</div>
+          <div style={{display:"grid",gap:".4rem",fontSize:".95rem"}}>
+            <a href="mailto:gergrood@gmail.com" style={{color:"var(--paper)",textDecoration:"none",borderBottom:"1px dashed rgba(241,235,220,0.3)",paddingBottom:"2px",width:"fit-content"}}>gergrood@gmail.com</a>
+            <a href="tel:0506934423" style={{color:"var(--paper)",textDecoration:"none"}} dir="ltr">050-693-4423</a>
+            <a href="https://sciencedu.online" target="_blank" rel="noopener" style={{color:"var(--accent)",textDecoration:"none"}}>sciencedu.online</a>
+          </div>
+        </div>
+        <div>
+          <div className="mono" style={{color:"rgba(241,235,220,0.5)",marginBottom:".8rem"}}>נופר גרגרוד</div>
+          <div style={{fontSize:".9rem",lineHeight:1.6,color:"rgba(241,235,220,0.7)"}}>
+            פיתוח חשיבה<br/>
+            מורה · מדריכה · מפתחת טכנו-פדגוגית<br/>
+            פיתוח מקצועי למורים
+          </div>
+        </div>
+      </div>
+      <div className="container" style={{borderTop:"1px solid rgba(241,235,220,0.12)",marginTop:"2.5rem",paddingTop:"1.2rem",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span className="mono" style={{color:"rgba(241,235,220,0.4)"}}>© 2026 פיתוח חשיבה · כל הזכויות שמורות</span>
+        <span className="mono" style={{color:"rgba(241,235,220,0.4)"}}>v.02 · LAUNCH</span>
+      </div>
+      <style>{`@media(max-width:760px){footer .container{grid-template-columns:1fr !important}}`}</style>
+    </footer>
+  );
+}
+
+// === Sticky mobile CTA ===
+function StickyMobileCTA(){
+  const [visible,setVisible] = useState(false);
+  useEffect(()=>{
+    const pricing = document.getElementById('roi') || document.getElementById('pricing');
+    if(!pricing) return;
+    const onScroll = ()=>{
+      const r = pricing.getBoundingClientRect();
+      // Hide once pricing section's top has entered the viewport (and stay hidden until well past it)
+      const pricingApproaching = r.top < window.innerHeight - 80;
+      const pastPricing = r.bottom < 80;
+      const pastHero = window.scrollY > window.innerHeight*0.5;
+      setVisible(pastHero && !pricingApproaching || pastPricing);
+    };
+    onScroll();
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll);
+    return ()=>{
+      window.removeEventListener('scroll',onScroll);
+      window.removeEventListener('resize',onScroll);
+    };
+  },[]);
+  return (
+    <div className={"sticky-mobile-cta"+(visible?" in":"")} aria-hidden={!visible}>
+      <a href="#pricing" onClick={smoothScrollToPricing}>
+        <span>🎯</span>
+        <span>אני רוצה את המאיץ</span>
+        <span style={{fontFamily:"JetBrains Mono",fontSize:".9rem"}}>←</span>
+      </a>
+    </div>
+  );
+}
+
+// === Tweaks ===
+function TweaksUI({tweaks,setTweak}){
+  return (
+    <TweaksPanel title="Tweaks · ניהול מחירים">
+      <TweakSection label="חלון השקה נוכחי">
+        <div style={{fontSize:"10px",color:"rgba(41,38,27,.55)",marginTop:"-4px",marginBottom:"4px"}}>אעדכני בכל פעם שהמחיר עולה</div>
+        <TweakNumber label="מספר חלון" value={tweaks.windowNumber} min={1} max={4}
+          onChange={v=>setTweak('windowNumber', v)}/>
+        <TweakText label="מחיר אישי" value={tweaks.personalPrice} placeholder="431 ₪"
+          onChange={v=>setTweak('personalPrice', v)}/>
+        <TweakText label="מחיר מוסדי" value={tweaks.institutionalPrice} placeholder="2,100 ₪"
+          onChange={v=>setTweak('institutionalPrice', v)}/>
+        <TweakNumber label="מקומות שנותרו" value={tweaks.spotsRemaining} min={0} max={99}
+          onChange={v=>setTweak('spotsRemaining', v)}/>
+        <TweakText label="מחיר הבא" value={tweaks.nextWindowPrice} placeholder="529 ₪"
+          onChange={v=>setTweak('nextWindowPrice', v)}/>
+      </TweakSection>
+
+      <TweakSection label="קישורי רכישה">
+        <div style={{fontSize:"10px",color:"rgba(41,38,27,.55)",marginTop:"-4px",marginBottom:"4px"}}>הכניסי את לינקי התשלום שתקבלי</div>
+        <TweakText label="ד-ו (יסודי)" value={tweaks.elementaryPurchaseLink} placeholder="https://..."
+          onChange={v=>setTweak('elementaryPurchaseLink', v)}/>
+        <TweakText label="ז-ט (חטיבה)" value={tweaks.middleSchoolPurchaseLink} placeholder="https://..."
+          onChange={v=>setTweak('middleSchoolPurchaseLink', v)}/>
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+// === App ===
+function App(){
+  const [tweaks,setTweak] = useTweaks(DEFAULTS);
+  return (
+    <div>
+      <Header/>
+      <Hero tweaks={tweaks}/>
+      <Ticker/>
+      <ProblemSection/>
+      <SolutionSection/>
+      <CTAStrip
+        variant="dark"
+        eyebrow="מוכנה להפסיק להלחם?"
+        title={<>5 רכיבים. מערכת הפעלה אחת. <span style={{color:"var(--accent)"}}>הכיתה שלך לא תהיה אותה אחת לעולם.</span></>}
+        note="גישה מיידית · רישיון לכל החיים"
+      />
+      <AgeLevels/>
+      <About/>
+      <CTAStrip
+        variant="light"
+        eyebrow="מוכנה להפסיק לחפש ולהתחיל ללמד?"
+        title={<>מה שהתלמידים שלך צריכים - <span className="uline">את כבר יודעת</span>. עכשיו זה רק עניין של כלים.</>}
+        note="מחיר השקה: רישיון לכל החיים · גישה מיידית · עדכונים חינם"
+      />
+      <WhatYouGet/>
+      <Gift/>
+      <Pricing tweaks={tweaks}/>
+      <FAQ/>
+      <CTAStrip
+        variant="dark"
+        eyebrow="כל השאלות נענו?"
+        title={<>אז <span style={{color:"var(--accent)"}}>הזמן להפסיק להתלבט</span> ולהתחיל ללמד.</>}
+        note="המקומות בחלון הנוכחי הולכים ונגמרים. הבטיחי את שלך."
+      />
+      <Footer/>
+      <StickyMobileCTA/>
+      {window.location.search.includes('edit=true') && <TweaksUI tweaks={tweaks} setTweak={setTweak}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
