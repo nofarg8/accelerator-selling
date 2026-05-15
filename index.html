@@ -81,29 +81,7 @@
   .paper-card{background:var(--paper);border:1px solid var(--rule);border-radius:6px;position:relative}
   .paper-card::before{content:"";position:absolute;inset:0;border-radius:6px;background-image:radial-gradient(rgba(22,24,20,.04) 1px, transparent 1px);background-size:14px 14px;pointer-events:none;mix-blend-mode:multiply}
 
-  /* Sticky mobile CTA */
-  .sticky-mobile-cta{
-    position:fixed;left:0;right:0;bottom:0;z-index:50;
-    padding:.75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
-    background:rgba(241,235,220,0.92);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-top:1px solid var(--rule-strong);
-    display:none;
-    transform:translateY(100%);transition:transform .25s ease, opacity .25s ease;
-    opacity:0;
-  }
-  .sticky-mobile-cta.in{transform:translateY(0);opacity:1}
-  .sticky-mobile-cta a{
-    display:flex;align-items:center;justify-content:center;gap:.55rem;
-    width:100%;background:var(--ink);color:var(--paper);
-    padding:1rem 1.2rem;border-radius:999px;text-decoration:none;
-    font-family:"Heebo";font-weight:500;font-size:1rem;
-    box-shadow:0 4px 14px rgba(22,24,20,0.18);
-  }
-  @media (max-width:880px){
-    .sticky-mobile-cta{display:block}
-    body{padding-bottom:80px}
-  }
+
 </style>
 </head>
 <body>
@@ -1250,38 +1228,6 @@ function Footer(){
   );
 }
 
-// === Sticky mobile CTA ===
-function StickyMobileCTA(){
-  const [visible,setVisible] = useState(false);
-  useEffect(()=>{
-    const pricing = document.getElementById('roi') || document.getElementById('pricing');
-    if(!pricing) return;
-    const onScroll = ()=>{
-      const r = pricing.getBoundingClientRect();
-      // Hide once pricing section's top has entered the viewport (and stay hidden until well past it)
-      const pricingApproaching = r.top < window.innerHeight - 80;
-      const pastPricing = r.bottom < 80;
-      const pastHero = window.scrollY > window.innerHeight*0.5;
-      setVisible(pastHero && !pricingApproaching || pastPricing);
-    };
-    onScroll();
-    window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',onScroll);
-    return ()=>{
-      window.removeEventListener('scroll',onScroll);
-      window.removeEventListener('resize',onScroll);
-    };
-  },[]);
-  return (
-    <div className={"sticky-mobile-cta"+(visible?" in":"")} aria-hidden={!visible}>
-      <a href="#pricing" onClick={smoothScrollToPricing}>
-        <span>🎯</span>
-        <span>אני רוצה את המאיץ</span>
-        <span style={{fontFamily:"JetBrains Mono",fontSize:".9rem"}}>←</span>
-      </a>
-    </div>
-  );
-}
 
 // === Tweaks ===
 function TweaksUI({tweaks,setTweak}){
@@ -1349,7 +1295,6 @@ function App(){
         note="המקומות בחלון הנוכחי הולכים ונגמרים. הבטיחי את שלך."
       />
       <Footer/>
-      <StickyMobileCTA/>
       {window.location.search.includes('edit=true') && <TweaksUI tweaks={tweaks} setTweak={setTweak}/>}
     </div>
   );
