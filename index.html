@@ -335,6 +335,15 @@ function useReveal(){
 
 function smoothScrollToPricing(e){
   if(e) e.preventDefault();
+  // אם הדף בתוך iframe (כמו ב-Wix) - פתח את הדף בלשונית חדשה עם anchor #pricing כדי לעקוף את מגבלות ה-iframe
+  let inIframe = false;
+  try { inIframe = window.self !== window.top; } catch(err){ inIframe = true; }
+  if(inIframe){
+    const url = window.location.href.split('#')[0] + '#pricing';
+    window.open(url, '_blank', 'noopener');
+    return;
+  }
+  // אחרת - גלילה רגילה לסקציית המחיר בתוך הדף
   const target = document.getElementById('roi') || document.getElementById('pricing');
   if(target){
     const y = target.getBoundingClientRect().top + window.scrollY - 24;
@@ -538,11 +547,11 @@ function ProblemSection(){
             <div style={{padding:"2rem",background:"var(--ink)",color:"var(--paper)",borderRadius:"4px",position:"relative"}}>
               <div className="mono" style={{color:"var(--accent)",marginBottom:".7rem"}}>האמת הנוירו-פדגוגית</div>
               <div className="serif" style={{fontSize:"1.6rem",lineHeight:1.2,fontWeight:700}}>
-                המוח לא מאחסן<br/>
-                <span style={{color:"var(--accent)"}}>מילים בודדות</span>.<br/>
-                הוא מאחסן <span style={{borderBottom:"2px solid var(--accent)"}}>רשתות</span>.
+                המוח לומד הכי טוב<br/>
+                כשהמידע מגיע <span style={{color:"var(--accent)"}}>מכל ההקשרים</span>.<br/>
+                כי למידה היא, בסופו של דבר, <span style={{borderBottom:"2px solid var(--accent)"}}>רשת</span>.
               </div>
-              <div className="mono" style={{marginTop:"1rem",color:"rgba(241,235,220,0.55)"}}>אם אין רשת - אין למידה</div>
+              <div className="mono" style={{marginTop:"1rem",color:"rgba(241,235,220,0.55)"}}>הקשרים מרובים = למידה אמיתית</div>
             </div>
           </div>
 
@@ -1092,6 +1101,8 @@ function FAQ(){
      a:"בהחלט. המאיץ הלשוני נבנה בהתאם לתוכנית הלימודים החדשה ולדרישות המזכירות הפדגוגית. רישיון מוסדי כולל גם הדרכה לצוות המורות בבית הספר. ניתן להפיק הצעת מחיר מסודרת עבור הנהלת בית הספר או הרשות המקומית. דברי איתי ונתאים את המסמכים למה שהמנהלת שלך צריכה כדי לאשר את הרכישה."},
     {q:"מאיפה הביטחון שזה באמת עובד?",
      a:"הביטחון שלי מגיע משני מקומות: מהמעבדה ומהשטח. מהמעבדה - הידע שלי ממדעי המוח מוטמע בתוך הכלים האלו. מהשטח - אני מנהלת ומלמדת תלמידים מורכבים בשפה, ומצליחה ללמד אותם תחומי דעת נוספים כמו מדעים, מתמטיקה ורבי מלל, בזכות העבודה עם המאיץ הלשוני. אני לא מוכרת לך תיאוריה, אני מוכרת לך כלי שדייקתי מול תלמידים אמיתיים."},
+    {q:"האם הערכה תתעדכן? יוצאים תכנים חדשים?",
+     a:"כן. המאיץ הלשוני הוא ערכה חיה, לא מוצר סטטי. אני ממשיכה לפתח ולהוסיף - טקסטים חדשים, חבילות שורשים, ותוספות פדגוגיות."},
   ];
   return (
     <section className="sec" style={{paddingTop:"5rem",paddingBottom:"5rem"}}>
