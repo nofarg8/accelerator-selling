@@ -313,20 +313,8 @@ function useReveal(){
 
 function smoothScrollToPricing(e){
   if(e) e.preventDefault();
-  // אם הדף בתוך iframe (כמו ב-Wix) - פתח את הדף בלשונית חדשה עם anchor #pricing כדי לעקוף את מגבלות ה-iframe
-  let inIframe = false;
-  try { inIframe = window.self !== window.top; } catch(err){ inIframe = true; }
-  if(inIframe){
-    const url = window.location.href.split('#')[0] + '#pricing';
-    window.open(url, '_blank', 'noopener');
-    return;
-  }
-  // אחרת - גלילה רגילה לסקציית המחיר בתוך הדף
-  const target = document.getElementById('roi') || document.getElementById('pricing');
-  if(target){
-    const y = target.getBoundingClientRect().top + window.scrollY - 24;
-    window.scrollTo({top:y, behavior:'smooth'});
-  }
+  // לחיצה על CTA "אני רוצה את המאיץ" - פתיחת עמוד הרכישה ישירות בלשונית חדשה
+  window.open('https://www.sciencedu.online/plans-accelerator', '_blank', 'noopener');
 }
 
 // === Logo mark ===
@@ -351,7 +339,7 @@ function Header(){
             <span style={{width:6,height:6,background:"var(--accent)",borderRadius:"50%"}} className="pulse"></span>
             <span>גיליון 02 · ההשקה פתוחה</span>
           </div>
-          <a href="#pricing" onClick={smoothScrollToPricing} className="btn-primary" style={{padding:"0.6rem 1.05rem",fontSize:".9rem"}}>אני רוצה את המאיץ <span className="arr">←</span></a>
+          <a href="https://www.sciencedu.online/plans-accelerator" target="_blank" rel="noopener" onClick={smoothScrollToPricing} className="btn-primary" style={{padding:"0.6rem 1.05rem",fontSize:".9rem"}}>אני רוצה את המאיץ <span className="arr">←</span></a>
         </div>
       </div>
       <style>{`@media(max-width:780px){.hdr-meta .mono{display:none}}`}</style>
@@ -429,7 +417,7 @@ function Hero({tweaks}){
             </p>
 
             <div style={{display:"flex",gap:"0.9rem",flexWrap:"wrap",alignItems:"center",marginBottom:"2.5rem"}}>
-              <a href="#pricing" onClick={smoothScrollToPricing} className="btn-primary">
+              <a href="https://www.sciencedu.online/plans-accelerator" target="_blank" rel="noopener" onClick={smoothScrollToPricing} className="btn-primary">
                 <span>אני רוצה את המאיץ</span>
                 <span className="arr">→</span>
               </a>
@@ -1176,7 +1164,7 @@ function CTAStrip({variant="light",eyebrow,title,note,buttonLabel="אני רוצ
               </div>
             )}
           </div>
-          <a href="#pricing" onClick={smoothScrollToPricing} className="btn-primary" style={isDark?{background:"var(--accent)",color:"var(--ink)",borderColor:"var(--accent)"}:{}}>
+          <a href="https://www.sciencedu.online/plans-accelerator" target="_blank" rel="noopener" onClick={smoothScrollToPricing} className="btn-primary" style={isDark?{background:"var(--accent)",color:"var(--ink)",borderColor:"var(--accent)"}:{}}>
             <span>{buttonLabel}</span>
             <span className="arr">→</span>
           </a>
