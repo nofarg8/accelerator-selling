@@ -927,6 +927,32 @@ function Pricing({tweaks}){
           </div>
         </div>
 
+        {/* Windows table */}
+        <div className="reveal" style={{maxWidth:"820px",margin:"0 auto 2.5rem auto",border:"1px solid var(--rule)",borderRadius:"6px",overflow:"hidden",background:"var(--paper)"}}>
+          <div style={{padding:"1rem 1.2rem",borderBottom:"1px solid var(--rule)",background:"var(--paper-2)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:".6rem",flexWrap:"wrap"}}>
+            <div className="mono" style={{color:"var(--ink-soft)"}}>חלונות השקה · רישיון מורה אישי</div>
+            <span className="mono" style={{color:"var(--accent)"}}>● TIMELINE</span>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:0}} className="windows-grid">
+            {[
+              {n:"חלון 1",p:"431 ₪",s:"הסבב הזול ביותר · מסתיים ב-15.6",active:tweaks.windowNumber===1},
+              {n:"חלון 2",p:"529 ₪",s:"",active:tweaks.windowNumber===2},
+              {n:"חלון 3",p:"592 ₪",s:"",active:tweaks.windowNumber===3},
+              {n:"מחיר מלא",p:"811 ₪",s:"לאחר ההשקה",active:tweaks.windowNumber>=4},
+            ].map((w,i,arr)=>(
+              <div key={i} style={{padding:"1.1rem 1rem",borderLeft:i<arr.length-1?"1px solid var(--rule)":"none",background:w.active?"var(--ink)":"transparent",color:w.active?"var(--paper)":"var(--ink)",position:"relative"}}>
+                <div className="mono" style={{color:w.active?"var(--accent)":"var(--ink-soft)",marginBottom:".4rem"}}>{w.n}{w.active?" · עכשיו":""}</div>
+                <div className="serif" style={{fontSize:"1.4rem",fontWeight:700,lineHeight:1,marginBottom:".25rem"}}>{w.p}</div>
+                <div style={{fontSize:".82rem",color:w.active?"rgba(241,235,220,0.6)":"var(--ink-soft)"}}>{w.s}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"1rem 1.2rem",borderTop:"1px solid var(--rule)",background:"var(--paper-2)",fontSize:".88rem",color:"var(--ink-soft)",lineHeight:1.5}}>
+            <strong style={{color:"var(--ink)",fontWeight:500}}>רישיון מוסדי</strong> בתנאי השקה: <strong style={{color:"var(--ink)",fontWeight:500}}>2,100 ₪</strong> (כולל הדרכת צוות) · מחיר מלא: 2,893 ₪
+          </div>
+          <style>{`@media(max-width:680px){.windows-grid{grid-template-columns:repeat(2,1fr) !important}.windows-grid>div:nth-child(2){border-left:none !important}.windows-grid>div:nth-child(3),.windows-grid>div:nth-child(4){border-top:1px solid var(--rule)}}`}</style>
+        </div>
+
         {/* Live price block */}
         <div className="reveal" style={{maxWidth:"720px",margin:"0 auto 2.5rem auto",background:"var(--ink)",color:"var(--paper)",borderRadius:"6px",padding:"2.4rem 2rem",position:"relative",overflow:"hidden",boxShadow:"6px 6px 0 var(--accent)"}}>
           <div style={{position:"absolute",top:"-30px",left:"-30px",width:"180px",height:"180px",border:"1px dashed rgba(241,235,220,0.18)",borderRadius:"50%"}}></div>
@@ -1009,32 +1035,6 @@ function Pricing({tweaks}){
               </div>
             </div>
           </a>
-        </div>
-
-        {/* Windows table */}
-        <div className="reveal" style={{maxWidth:"820px",margin:"0 auto 1.5rem auto",border:"1px solid var(--rule)",borderRadius:"6px",overflow:"hidden",background:"var(--paper)"}}>
-          <div style={{padding:"1rem 1.2rem",borderBottom:"1px solid var(--rule)",background:"var(--paper-2)",display:"flex",alignItems:"center",justifyContent:"space-between",gap:".6rem",flexWrap:"wrap"}}>
-            <div className="mono" style={{color:"var(--ink-soft)"}}>חלונות השקה · רישיון מורה אישי</div>
-            <span className="mono" style={{color:"var(--accent)"}}>● TIMELINE</span>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:0}} className="windows-grid">
-            {[
-              {n:"חלון 1",p:"431 ₪",s:"הסבב הזול ביותר · מסתיים ב-15.6",active:tweaks.windowNumber===1},
-              {n:"חלון 2",p:"529 ₪",s:"",active:tweaks.windowNumber===2},
-              {n:"חלון 3",p:"592 ₪",s:"",active:tweaks.windowNumber===3},
-              {n:"מחיר מלא",p:"811 ₪",s:"לאחר ההשקה",active:tweaks.windowNumber>=4},
-            ].map((w,i,arr)=>(
-              <div key={i} style={{padding:"1.1rem 1rem",borderLeft:i<arr.length-1?"1px solid var(--rule)":"none",background:w.active?"var(--ink)":"transparent",color:w.active?"var(--paper)":"var(--ink)",position:"relative"}}>
-                <div className="mono" style={{color:w.active?"var(--accent)":"var(--ink-soft)",marginBottom:".4rem"}}>{w.n}{w.active?" · עכשיו":""}</div>
-                <div className="serif" style={{fontSize:"1.4rem",fontWeight:700,lineHeight:1,marginBottom:".25rem"}}>{w.p}</div>
-                <div style={{fontSize:".82rem",color:w.active?"rgba(241,235,220,0.6)":"var(--ink-soft)"}}>{w.s}</div>
-              </div>
-            ))}
-          </div>
-          <div style={{padding:"1rem 1.2rem",borderTop:"1px solid var(--rule)",background:"var(--paper-2)",fontSize:".88rem",color:"var(--ink-soft)",lineHeight:1.5}}>
-            <strong style={{color:"var(--ink)",fontWeight:500}}>רישיון מוסדי</strong> בתנאי השקה: <strong style={{color:"var(--ink)",fontWeight:500}}>2,100 ₪</strong> (כולל הדרכת צוות) · מחיר מלא: 2,893 ₪
-          </div>
-          <style>{`@media(max-width:680px){.windows-grid{grid-template-columns:repeat(2,1fr) !important}.windows-grid>div:nth-child(2){border-left:none !important}.windows-grid>div:nth-child(3),.windows-grid>div:nth-child(4){border-top:1px solid var(--rule)}}`}</style>
         </div>
 
         {/* bottom note */}
