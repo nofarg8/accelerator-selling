@@ -1019,9 +1019,9 @@ function Pricing({tweaks}){
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:0}} className="windows-grid">
             {[
-              {n:"חלון 1",p:"431 ₪",s:"5 ראשונות",active:tweaks.windowNumber===1},
-              {n:"חלון 2",p:"529 ₪",s:"10 הבאות",active:tweaks.windowNumber===2},
-              {n:"חלון 3",p:"592 ₪",s:"12 הבאות",active:tweaks.windowNumber===3},
+              {n:"חלון 1",p:"431 ₪",s:"הסבב הזול ביותר · מסתיים ב-15.6",active:tweaks.windowNumber===1},
+              {n:"חלון 2",p:"529 ₪",s:"",active:tweaks.windowNumber===2},
+              {n:"חלון 3",p:"592 ₪",s:"",active:tweaks.windowNumber===3},
               {n:"מחיר מלא",p:"811 ₪",s:"לאחר ההשקה",active:tweaks.windowNumber>=4},
             ].map((w,i,arr)=>(
               <div key={i} style={{padding:"1.1rem 1rem",borderLeft:i<arr.length-1?"1px solid var(--rule)":"none",background:w.active?"var(--ink)":"transparent",color:w.active?"var(--paper)":"var(--ink)",position:"relative"}}>
@@ -1043,6 +1043,12 @@ function Pricing({tweaks}){
             <span>גישה מיידית</span><span style={{opacity:.5}}>·</span>
             <span>רישיון לכל החיים</span><span style={{opacity:.5}}>·</span>
             <span>רישיון אישי או מוסדי</span>
+          </div>
+          <div style={{marginTop:"1.4rem",fontSize:".98rem",color:"var(--ink-soft)",lineHeight:1.6}}>
+            רוצה קצת יותר פרטים לפני שמחליטים?{" "}
+            <a href="https://canva.link/e4m06tx9qpcjtnu" target="_blank" rel="noopener" style={{color:"var(--ink)",fontWeight:600,textDecoration:"underline"}}>
+              ההקלטה המלאה + מצגת החושפת את כל חלקי המאיץ הלשוני וכיצד עובדים איתו
+            </a>
           </div>
         </div>
       </div>
@@ -1079,7 +1085,7 @@ function FAQ(){
           </div>
           <h2 className="serif" style={{fontSize:"clamp(2rem,4.4vw,3.4rem)",lineHeight:1.05,margin:"0 0 1rem 0",letterSpacing:"-0.02em"}}>
             יש לך שאלות?<br/>
-            בואי נעשה <span className="uline">סדר</span> (תכל'ס)
+            בואי נעשה <span className="uline">סדר</span>
           </h2>
         </div>
 
